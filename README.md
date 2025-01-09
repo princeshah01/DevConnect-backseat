@@ -5,6 +5,7 @@
 -POST /Signup
 -POST /Login
 -POST /Logout
+-PATCH /Forgetpassword
 
 ## UserProfile (ProfileRouter)
 

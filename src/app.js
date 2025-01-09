@@ -2,11 +2,13 @@ const express = require("express");
 require("dotenv").config();
 const dbConnect = require("./dbConnection");
 const cookieParser = require("cookie-parser");
-
-
 const app = express();
+app.set('view engine', 'ejs'); 
+app.set('views', './views'); 
+
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 // importing routers 
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+  
+</head>
+<body>
+    <div class="flex justify-center items-center h-[100vh] w-[100vw] bg-[#1A202C]">
+        <div class="bg-[#171a21] rounded-[10px] min-w-[20rem] h-[25rem] flex justify-center items-center flex-col">
+            <h2 class="text-[#F5F5F5] my-9 font-extrabold text-2xl">Reset Password</h2>
+
+            <% if (typeof message !== 'undefined' && message) { %>
+                <p class="text-<%= error ? 'red' : 'green' %>-200 text-sm m-4  font-thin my-2">
+                    <%- message %> 
+                </p>
+            <% } %>
+
+            <form action="" method="post" class="flex flex-col">
+                <p id="email" class="text-[#F5F5F5] border opacity-70 border-2 px-2 py-2 bg-[#c3c2c29a] min-w-[190px] border-[#8707ff] mb-4 rounded-md">
+                    <%= email %>
+                </p>
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter new password"
+                    class="text-[#F5F5F5] border border-2 px-2 py-2 bg-transparent max-w-[190px] border-[#8707ff] mb-4 rounded-md"
+                    required
+                />
+                <input
+                    id="confirm-password"
+                    type="password"
+                    name="confirm-password"
+                    placeholder="Confirm new password"
+                    class="text-[#F5F5F5] border border-2 px-2 py-2 bg-transparent max-w-[190px] border-[#8707ff] mb-4 rounded-md"
+                    required
+                />
+                <div class="text-[#F5F5F5] flex items-center mb-3">
+                    <label for="togglePassword" class="ml-1 text-[10px]">Show</label>
+                    <input type="checkbox" id="togglePassword" class="ml-1" />
+                </div>
+
+                <button
+                    type="submit"
+                    name="submit"
+                    value="submit"
+                    class="font-extralight text-sm text-[#F5F5F5] border px-6 py-2 bg-[#8707ff] max-w-[190px] border-[#8707ff] mb-4 rounded-md"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm-password");
+
+        document.getElementById("togglePassword").addEventListener("change", function () {
+            const type = this.checked ? "text" : "password";
+            passwordInput.type = type;
+            confirmPasswordInput.type = type;
+        });
+
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function (e) {
+            if (!passwordInput.value.trim()) {
+                e.preventDefault();
+                alert("Password cannot be empty!");
+            } else if (passwordInput.value !== confirmPasswordInput.value) {
+                e.preventDefault();
+                alert("Passwords do not match!");
+            }
+        });
+        const messageElement = document.querySelector("p");
+        if (messageElement && messageElement.innerHTML.includes("Password recovered successfully ✌️")) {
+            alert("Do you want to login?");
+                window.location.href = "http://localhost:3000/login";
+            
+        }
+    </script>
+</body>
+</html>
