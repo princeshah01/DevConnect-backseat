@@ -8,6 +8,7 @@ const validateLogIn = require("../helper/ValidationForLogin");
 const trimObjectValues = require("../helper/TrimObjValues");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sendResetEmail = require("../helper/mailSender");
 
 //  signup api
 
@@ -70,6 +71,8 @@ authRouter.post("/logout", async (req, res) => {
   }
 });
 
+// forget password api 
+
 authRouter.patch("/forgetpassword", async (req, res) => {
   const { emailId } = req?.body;
   try {
@@ -85,7 +88,7 @@ authRouter.patch("/forgetpassword", async (req, res) => {
       }
     );
     const mailMsg = `http://localhost:5000/resetPassword/${oldUser._id}/${token}`;
-    console.log(mailMsg);
+    sendResetEmail(oldUser.emailId,mailMsg);
     res.status(200).json({
       success: true,
       message: `Reset link has been sent to your Email ${oldUser.emailId}`,
@@ -115,6 +118,7 @@ authRouter.get("/resetPassword/:id/:token", async (req, res) => {
     });
   }
 });
+
 authRouter.post("/resetPassword/:id/:token", async (req, res) => {
   try {
     const { token, id } = req.params;
@@ -172,5 +176,6 @@ authRouter.post("/resetPassword/:id/:token", async (req, res) => {
     });
   }
 });
+
 
 module.exports = authRouter;
