@@ -66,6 +66,8 @@ authRouter.post("/login", async (req,res)=>{
 
 });
 
+// logout api basically all the cleaning work is done here like session , cookies , localstorage... etc
+ 
 authRouter.post("/logout" , async(req,res)=>{
     try{
 

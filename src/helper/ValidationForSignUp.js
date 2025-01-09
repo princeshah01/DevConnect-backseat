@@ -1,7 +1,8 @@
 const validator = require("validator");
 const User = require("../models/user");
+const trimObjectValues = require("../helper/TrimObjValues") ;
+const validateSignUp = async (req) => {
 
-const validateSignUp = async (req,res) => {
   const {
     firstName = "",
     lastName = "",
@@ -9,31 +10,24 @@ const validateSignUp = async (req,res) => {
     password = "",
     gender = "",
     dateOfBirth = "",
-  } = req.body;
+  } = trimObjectValues(req?.body);
 
   const acceptedGenders = ["male", "female", "others"];
   const todayDate = new Date();
   const minAge = 18;
-  const trimmedFirstName = firstName.trim();
-  const trimmedLastName = lastName.trim();
-  const trimmedEmailId = emailId.trim();
-  const trimmedPassword = password.trim();
-  const trimmedGender = gender.trim();
-  const trimmedDateOfBirth = dateOfBirth.trim();
-
 
     // Check if user already exists
-    const existingUser = await User.findOne({ emailId: trimmedEmailId });
+    const existingUser = await User.findOne({ emailId: emailId });
     if (existingUser) {
       throw new Error("User already exists.");
     }
     
   // Validating Date of Birth
-  if (!trimmedDateOfBirth) {
+  if (!dateOfBirth) {
     throw new Error("Date of Birth is required.");
   }
 
-  const birthDate = new Date(trimmedDateOfBirth);
+  const birthDate = new Date(dateOfBirth);
   if (isNaN(birthDate.getTime())) {
     throw new Error("Invalid Date of Birth format.");
   }
@@ -54,29 +48,29 @@ const validateSignUp = async (req,res) => {
 
   // Validating First Name
   if (
-    !trimmedFirstName ||
-    trimmedFirstName.length < 4 ||
-    trimmedFirstName.length > 20
+    !firstName ||
+    firstName.length < 4 ||
+    firstName.length > 20
   ) {
     throw new Error("First Name must be between 4 and 20 characters.");
   }
 
   // Validating Last Name
   if (
-    !trimmedLastName ||
-    trimmedLastName.length < 2 ||
-    trimmedLastName.length > 20
+    !lastName ||
+    lastName.length < 2 ||
+    lastName.length > 20
   ) {
     throw new Error("Last Name must be between 2 and 20 characters.");
   }
 
   // Validating Email
-  if (!validator.isEmail(trimmedEmailId)) {
-    throw new Error(`Invalid Email: ${trimmedEmailId}`);
+  if (!validator.isEmail(emailId)) {
+    throw new Error(`Invalid Email: ${emailId}`);
   }
 
   // Validating Password Strength
-  if (!validator.isStrongPassword(trimmedPassword)) {
+  if (!validator.isStrongPassword(password)) {
     throw new Error(
       "Password must be strong (at least 8 characters, including uppercase, lowercase, number, and symbol)."
     );
@@ -84,8 +78,8 @@ const validateSignUp = async (req,res) => {
   
   // Validating Gender
   if (
-    !trimmedGender ||
-    !acceptedGenders.includes(trimmedGender.toLowerCase())
+    !gender ||
+    !acceptedGenders.includes(gender.toLowerCase())
   ) {
     throw new Error(
       "Invalid Gender. Accepted values are: male, female, others."
