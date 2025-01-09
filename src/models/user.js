@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken") ;
+const bcrypt  = require("bcrypt") ;
 
 const UserSchema = new Schema(
   {
@@ -30,31 +32,6 @@ const UserSchema = new Schema(
         },
         message: "invalid email try something else :( ",
       },
-    },
-    PhoneNumber: {
-      type: String,
-      required: true,
-      trim: true,
-      minLength: 10,
-      validate: {
-        validator: function (value) {
-          return validator.isMobilePhone(value, "any", { strictMode: false });
-        },
-        message: "invalid phone number enter valid one ",
-      },
-    },
-    userName: {
-      type: String,
-      required: true,
-      lowercase: true,
-      minLength: 5,
-      maxLength: 20,
-      unique: true,
-      validate: {
-        validator: (value) => /^[a-zA-Z0-9]+$/.test(value),
-        message: "username can only contain letters and numbers",
-      },
-      trim: true,
     },
     password: {
       type: String,
@@ -140,11 +117,24 @@ const UserSchema = new Schema(
     },
     matches: {
       type: [Schema.Types.ObjectId],
-      ref: "User", // so our mongoDb will know that object id belongs to User model
+      ref: "User", 
       default: [],
     },
   },
   { timestamps: true }
 );
+
+UserSchema.methods.getJWT =  async function(){
+  const user = this  ;
+  const token =await jwt.sign({_id : user._id}, process.env.JWT_SECRET,{expiresIn:"7d"}) ;
+  return token ;
+}
+
+UserSchema.methods.validatePassword = async function(password){
+  const user = this  ;
+  const IsPassword =  await bcrypt.compare(password , user.password) ;
+  return IsPassword ;
+}
+
 
 module.exports = model("User", UserSchema);
