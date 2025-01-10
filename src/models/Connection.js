@@ -21,6 +21,9 @@ const connectionRequestSchema = new Schema({
     },
 } , {timestamps:true});
 
+// compound index 
+
+connectionRequestSchema.index({fromUserId: 1 , toUserId : 1});
 
 //middleware for checking if user is sending request to self  
 
