@@ -2,7 +2,7 @@ const express = require("express");
 
 const validate = require("validator");
 const authRouter = express.Router();
-const User = require("../models/user");
+const User = require("../models/userModel");
 const validateSignUp = require("../helper/ValidationForSignUp");
 const validateLogIn = require("../helper/ValidationForLogin");
 const trimObjectValues = require("../helper/TrimObjValues");

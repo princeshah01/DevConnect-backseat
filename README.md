@@ -27,6 +27,7 @@
 -POST /user/request/review/rejected/:userId
 
 # connections and user data api 
--GET /user/Connections
+-GET /user/matches
+-GET /user/BlockedUser
 -GET /user/Requests/received
 -GET /user/Feed -- to get profile of other users

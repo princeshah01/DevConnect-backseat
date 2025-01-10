@@ -1,7 +1,7 @@
 const express = require("express") ;
 const userAuth = require("../middleware/auth");
 const ConnectionRequest = require("../models/Connection");
-const User = require("../models/user");
+const User = require("../models/userModel");
 const { connection } = require("mongoose");
 
 const requestRouter = express.Router() ;
@@ -31,6 +31,17 @@ requestRouter.post("/request/send/:status/:toUserId" , userAuth , async(req,res)
             toUserId ,
             status,
         });
+
+        // adding ignored user to blockedUsers so user can't be shown again 
+
+        if(newRequest.status === "ignored"){
+            const data = await User.findById(fromUserId) ;
+            if(!data.blockedUsers.includes(toUserId)){
+                data.blockedUsers.push(toUserId);
+                await data.save() ;
+            }
+        }
+
         await newRequest.save() ;
         res.status(200).json({success:true , message : (status==="ignored")?`you ignored ${existingUser.firstName} 😒`: `you are interested in ${existingUser.firstName} 👀`});
       

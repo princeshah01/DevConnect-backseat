@@ -1,5 +1,5 @@
 const validator = require("validator");
-const User = require("../models/user");
+const User = require("../models/userModel");
 const trimObjectValues = require("../helper/TrimObjValues") ;
 const validateSignUp = async (req) => {
 
