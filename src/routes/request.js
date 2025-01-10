@@ -1,5 +1,5 @@
 const express = require("express") ;
-const userAuth = require("../middleware/auth");
+const userAuth = require("../middleware/authMiddleWare");
 const ConnectionRequest = require("../models/Connection");
 const User = require("../models/userModel");
 const { connection } = require("mongoose");

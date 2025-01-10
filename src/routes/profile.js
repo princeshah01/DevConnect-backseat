@@ -2,7 +2,7 @@ const express = require("express");
 
 const profileRouter = express.Router();
 const validateForUpdateUser = require("../helper/ValidationForEditProfile");
-const userAuth = require("../middleware/auth");
+const userAuth = require("../middleware/authMiddleWare");
 const User = require("../models/userModel");
 const trimObjectValues = require("../helper/TrimObjValues");
 const validate = require("validator");
