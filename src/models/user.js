@@ -113,10 +113,11 @@ const UserSchema = new Schema(
     },
     blockedUsers: {
       type: [Schema.Types.ObjectId],
-      ref: "User",
+      unique:true,
       default: [],
     },
     matches: {
+
       type: [Schema.Types.ObjectId],
       ref: "User", 
       default: [],
