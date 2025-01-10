@@ -6,12 +6,15 @@
 -POST /Login
 -POST /Logout
 -PATCH /Forgetpassword
+-POST /resetpassword/:id/:token
+-GET /resetpassword/:id/:token
 
 ## UserProfile (ProfileRouter)
 
 -GET /Profile/view
 -PATCH /Profile/edit
 -PATCH /Profile/password
+
 
 ## connectionRequest (connectionRequestRouter)
 
