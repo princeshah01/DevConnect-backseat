@@ -46,6 +46,7 @@ const UserSchema = new Schema(
       },
       trim: true,
       required: true,
+      select:false,
     },
     dateOfBirth: {
       type: Date,
@@ -114,6 +115,7 @@ const UserSchema = new Schema(
     blockedUsers: {
       type: [Schema.Types.ObjectId],
       unique:true,
+      ref:"User",
       default: [],
     },
     matches: {

@@ -13,7 +13,7 @@ const userAuth = async (req, res, next) => {
     const tokenDecode = await jwt.verify(token, process.env.jwt_SECRET);
     const { _id } = tokenDecode;
     // console.log(_id)
-    const UserProfile = await User.findById(_id);
+    const UserProfile = await User.findById(_id).select("+password");
     if (!UserProfile) {
       throw new Error("User not Found");
     }

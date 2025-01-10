@@ -97,6 +97,7 @@ profileRouter.patch("/profile/password", userAuth, async (req, res) => {
         success: true,
       });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ message: err.message, success: false });
   }
 });

@@ -13,17 +13,16 @@ app.use(express.urlencoded({ extended: true }));
 // importing routers 
 
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request"); 
 
+
+// using routers 
 app.use("/" , authRouter) ;
 app.use("/" , profileRouter);
 app.use("/" , requestRouter)
-
-
-
-
-
+app.use("/", userRouter);
 
 
 
