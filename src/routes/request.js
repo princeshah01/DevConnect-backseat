@@ -32,16 +32,6 @@ requestRouter.post("/request/send/:status/:toUserId" , userAuth , async(req,res)
             status,
         });
 
-        // adding ignored user to blockedUsers so user can't be shown again 
-
-        if(newRequest.status === "ignored"){
-            const data = await User.findById(fromUserId) ;
-            if(!data.blockedUsers.includes(toUserId)){
-                data.blockedUsers.push(toUserId);
-                await data.save() ;
-            }
-        }
-
         await newRequest.save() ;
         res.status(200).json({success:true , message : (status==="ignored")?`you ignored ${existingUser.firstName} 😒`: `you are interested in ${existingUser.firstName} 👀`});
       
@@ -71,27 +61,21 @@ requestRouter.post("/request/review/:status/:requestId",userAuth , async(req,res
         } 
         connectionReq.status = status ;
 
-        // saving the matched user data to loggedin user object
+        // saving the matched user data to user object
 
         if(status === "accepted"){
-           const data = await User.findById({_id:loggedInUser._id});
-           if(!data.matches.includes(connectionReq.fromUserId)){
-            data.matches.push(connectionReq.fromUserId);
-            await data.save();
+           const loggedUserData = await User.findById({_id:loggedInUser._id});
+           const fromUserData = await User.findById(connectionReq.fromUserId);
+           if(!loggedUserData.matches.includes(connectionReq.fromUserId)){
+            loggedUserData.matches.push(connectionReq.fromUserId);
+            fromUserData.matches.push(connectionReq.toUserId);
+            await loggedUserData.save();
+            await fromUserData.save();
+
 
            }
         }
 
-        // saving the fromUserId to blockeduser for rejecting 
-
-        else if(status === "rejected"){
-            const data = await User.findById({_id:loggedInUser._id});
-            if(!data.blockedUsers.includes(connectionReq.fromUserId)){
-             data.blockedUsers.push(connectionReq.fromUserId);
-             await data.save();
- 
-            }
-         }
 
         const updatedConnectionReq = await connectionReq.save();
         
